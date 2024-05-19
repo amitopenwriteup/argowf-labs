@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: cowsay-example
+  namespace: argo
+spec:
+  serviceAccountName: training
+  entrypoint: cowsay-entrypoint
+  templates:
+    - name: cowsay-entrypoint
+      container:
+        image: docker/whalesay
+        command: [cowsay]
+        args: ["hello from Argo!"]
+  ttlStrategy:
+    secondsAfterCompletion: 300
+  podGC:
+    strategy: OnPodCompletion
