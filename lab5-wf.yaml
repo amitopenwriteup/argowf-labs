@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: gen-random-int
+  namespace: argo
+spec:
+  serviceAccountName: training
+  entrypoint: gen-random-int-entrypoint
+  templates:
+    - name: gen-random-int-entrypoint
+      script:
+        image: python:alpine3.6
+        command: [python]
+        source: |
+          import random
+          i = random.randint(1, 100)
+          print(i)
+  ttlStrategy:
+    secondsAfterCompletion: 300
+  podGC:
+    strategy: OnPodCompletion
