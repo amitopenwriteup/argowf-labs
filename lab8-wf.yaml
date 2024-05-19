@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: hello-hello-hello-training
+  namespace: argo
+spec:
+  serviceAccountName: training
+  entrypoint: hello-hello-hello
+  templates:
+    - name: hello-hello-hello
+      steps:
+        - - name: step1
+            template: prepare-data
+        - - name: step2a
+            template: run-data-first-half
+          - name: step2b
+            template: run-data-second-half
+    - name: prepare-data
+      container:
+        image: busybox
+        command: [sh, -c]
+        args: ["echo 'Preparing data...'"]
+    - name: run-data-first-half
+      container:
+        image: busybox
+        command: [sh, -c]
+        args: ["echo 'Running first half of data...'"]
+    - name: run-data-second-half
+      container:
+        image: busybox
+        command: [sh, -c]
+        args: ["echo 'Running second half of data...'"]
+  ttlStrategy:
+    secondsAfterCompletion: 300
+  podGC:
+    strategy: OnPodCompletion
