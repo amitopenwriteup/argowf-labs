@@ -2,8 +2,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: artifact-passing-
+  namespace: argo
 spec:
   entrypoint: artifact-example
+  serviceAccountName: training
   templates:
   - name: artifact-example
     steps:
