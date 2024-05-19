@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: delay-example-training
+  namespace: argo
+spec:
+  serviceAccountName: training
+  entrypoint: delay
+  templates:
+    - name: delay
+      suspend:
+        duration: "20s"
+  ttlStrategy:
+    secondsAfterCompletion: 300
+  podGC:
+    strategy: OnPodCompletion		
