@@ -1,0 +1,19 @@
+  namespace: argo
+spec:
+  serviceAccountName: training
+  entrypoint: k8s-owner-reference
+  templates:
+    - name: k8s-owner-reference
+      resource:
+        action: create
+        manifest: |
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            generateName: owned-eg-
+          data:
+            some: value
+  ttlStrategy:
+    secondsAfterCompletion: 300
+  podGC:
+    strategy: OnPodCompletion	
