@@ -1,0 +1,2 @@
+kubectl create clusterrolebinding training-rb  --clusterrole=argo-server-cluster-role  --serviceaccount=argo:training
+kubectl create clusterrolebinding training-rb2 --clusterrole=cluster-admin  --serviceaccount=argo:training
