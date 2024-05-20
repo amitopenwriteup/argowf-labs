@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: workflow-template-submittable
+spec:
+  workflowMetadata:
+    labels:
+      example-label: example-value
+  templates:
+  - name: hello-world
+    inputs:
+      parameters:
+      - name: message
+        default: "Hello, World!"
+    steps:
+    - - name: print-message
+        template: whalesay
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+  - name: whalesay
+    container:
+      image: docker/whalesay
+      command: [cowsay]
+      args: ["{{inputs.parameters.message}}"]
